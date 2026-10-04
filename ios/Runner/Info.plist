@@ -66,5 +66,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Nunya uses the camera to scan a server's QR code. The image is read on this phone and not kept.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Nunya reads a QR code from an image you choose. The image is read on this phone and not kept.</string>
 </dict>
 </plist>
