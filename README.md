@@ -4,17 +4,20 @@ Nunya for phones: Android first, iOS after.
 
 [Nunya](https://github.com/nunyavpn/nunya) is a desktop VPN client for
 [nunya-core](https://github.com/nunyavpn/nunya-core). This repository is its phone app, a project of
-its own and not a port of the desktop window. It is built directly on nunya-core's mobile library
-(gomobile: an `.aar` on Android, an `.xcframework` on iOS), so the core runs inside the app and the
-system's own VPN API carries the tunnel: `VpnService` on Android, a packet tunnel extension on iOS.
+its own and not a port of the desktop window. Its Android and iOS screens share one Flutter/Dart
+codebase. Each platform supplies its own VPN integration: `VpnService` on Android and a packet
+tunnel extension on iOS. The planned engine is Xray, built as a native library for each platform;
+the exact bindings still need to be proved on devices.
 
 ## Decisions so far
 
 - **Separate from the desktop repository.** nunya stays desktop-only (macOS, Linux, Windows); the
   phone apps are here.
-- **The core does the work.** What the desktop app does in its own code (generating the tunnel
-  config, reading share links and subscriptions) belongs in nunya-core's mobile library, so it is
-  written once and both clients use it.
+- **One mobile UI.** Flutter owns the shared screens and presentation state. Native services own
+  tunnel setup and engine lifetime, including when the app UI is closed.
+- **An Xray-based mobile engine.** AndroidLibXrayLite and libXray are candidates for Android and
+  iOS respectively. Their source builds, tunnel integration, and protocol coverage need validation
+  before either is pinned. The desktop `nunya-core` executable is not the mobile runtime.
 - **Android is released first, through F-Droid.** It is built from source, so nothing here can
   depend on a prebuilt binary F-Droid cannot rebuild. The repository is mirrored to GitLab
   (`nunya-vpn-group`) for that.
@@ -27,6 +30,12 @@ system's own VPN API carries the tunnel: `VpnService` on Android, a packet tunne
 
 [design/](design/README.md) has every screen, light and dark: Home (the connection as a sheet over
 the map), Servers, the sheets that rise from the bottom, and Settings.
+
+## Development
+
+The app is at the scaffold stage; a working VPN is not implemented yet. With Flutter installed,
+run `flutter pub get`, `flutter analyze`, and `flutter test` from this directory. Use
+`flutter run` with an Android or iOS device to open the app.
 
 ## License
 
