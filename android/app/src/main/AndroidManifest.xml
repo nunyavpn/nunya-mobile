@@ -1,4 +1,16 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- The geo-IP lookup that places the user's dot on the map, and later the tunnel itself. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Scanning a server's QR code. The camera plugin also asks for the microphone and storage,
+         which a VPN client has no use for; they are removed rather than requested. -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" tools:node="remove"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove"/>
+    <!-- Implied by the plugin's storage request; the system photo picker needs no permission. -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove"/>
+    <!-- Optional: a phone without a camera can still paste a link or read an image. -->
+    <uses-feature android:name="android.hardware.camera.any" android:required="false"/>
     <application
         android:label="Nunya"
         android:name="${applicationName}"

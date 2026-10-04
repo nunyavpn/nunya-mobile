@@ -65,8 +65,8 @@ Grouped rows. The current mobile board is VPN-only, so Mode and Port are absent 
 
 ## The board
 
-The screens were drawn from [board/](board/README.md), a page that renders each one with the desktop app's own colours, icons, flags and map. `nonya.png` is the app's artwork.
+The screens were drawn from [board/](board/README.md), a page that renders each one with the desktop app's own colours, icons, flags and map. `nonya.png` is the app's artwork; the launcher icons are written from it by `scripts/icons.py` (run it again when it changes), and the launch splash draws the desktop app's traced mark in its colours.
 
 ## Current Flutter preview
 
-The current source board (`board/mobile.ts`) is VPN-only. The saved screen PNGs predate that change and still show proxy controls and real connection claims; they are layout references. The installed Flutter preview follows the current board layout, labels simulated connection data, and uses `map/countries-110m.json` for its offline map. The map data is Natural Earth public domain via world-atlas.
+The current source board (`board/mobile.ts`) is VPN-only. The saved screen PNGs predate that change and still show proxy controls and real connection claims; they are layout references. The installed Flutter preview follows the current board layout, labels simulated connection data, and draws its offline map from `map/countries-110m.json` and, zoomed in, `map/countries-50m.json`, ported from the desktop app's `WorldMap`. The map data is Natural Earth public domain via world-atlas 2.0.2.
