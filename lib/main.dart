@@ -16,13 +16,32 @@ import 'tones.dart';
 import 'tunnel.dart';
 import 'whereabouts.dart';
 
-void main() => runApp(const NunyaApp());
+void main() =>
+    runApp(const NunyaApp(whereAmI: _screenshots ? _sampleLocation : locate));
+
+/// A build for README screenshots (`--dart-define=NUNYA_SCREENSHOTS=true`) places the phone in
+/// Milan, at a documentation address (RFC 5737), so a published picture never shows where the
+/// person taking it is.
+const _screenshots = bool.fromEnvironment('NUNYA_SCREENSHOTS');
+
+Future<Whereabouts> _sampleLocation() async => const Whereabouts(
+  ip: '203.0.113.7',
+  country: 'IT',
+  city: 'Milan',
+  lat: 45.46,
+  lon: 9.19,
+  asn: 64500,
+  org: 'Example Telecom',
+);
 
 class NunyaApp extends StatelessWidget {
-  const NunyaApp({super.key, this.splash = true});
+  const NunyaApp({super.key, this.splash = true, this.whereAmI = locate});
 
   /// Off in widget tests, which drive the app itself rather than wait out a launch.
   final bool splash;
+
+  /// How the phone is placed; a stand-in where there is no network, as in the screenshot tool.
+  final Future<Whereabouts> Function() whereAmI;
 
   @override
   Widget build(BuildContext context) => MaterialApp(
@@ -30,7 +49,7 @@ class NunyaApp extends StatelessWidget {
     debugShowCheckedModeBanner: false,
     theme: _theme(Brightness.light),
     darkTheme: _theme(Brightness.dark),
-    home: NunyaHome(splash: splash),
+    home: NunyaHome(splash: splash, whereAmI: whereAmI),
   );
 }
 
@@ -55,8 +74,9 @@ ThemeData _theme(Brightness brightness) {
 }
 
 class NunyaHome extends StatefulWidget {
-  const NunyaHome({super.key, this.splash = true});
+  const NunyaHome({super.key, this.splash = true, this.whereAmI = locate});
   final bool splash;
+  final Future<Whereabouts> Function() whereAmI;
   @override
   State<NunyaHome> createState() => _NunyaHomeState();
 }
@@ -147,7 +167,7 @@ class _NunyaHomeState extends State<NunyaHome> {
   Future<void> locateHome() async {
     if (homeRetry != null || status != TunnelStatus.off) return;
     try {
-      final found = await locate();
+      final found = await widget.whereAmI();
       if (!mounted || status != TunnelStatus.off) return;
       setState(() => home = found);
       // The place, not the address: logs end up pasted into public issues.

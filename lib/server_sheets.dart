@@ -711,21 +711,26 @@ class NameField extends StatelessWidget {
   final ValueChanged<String> onChanged;
 
   @override
-  Widget build(BuildContext context) => TextFormField(
-    key: const ValueKey('field:Name'),
-    initialValue: initial,
-    style: const TextStyle(fontSize: 16),
-    decoration: InputDecoration(
-      labelText: 'Name',
-      hintText: hint,
-      filled: true,
-      fillColor: context.tile,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
+  // Padded above: the floating label sits over the field's top edge, and the sheet's scroll
+  // view would clip it.
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(top: 8),
+    child: TextFormField(
+      key: const ValueKey('field:Name'),
+      initialValue: initial,
+      style: const TextStyle(fontSize: 16),
+      decoration: InputDecoration(
+        labelText: 'Name',
+        hintText: hint,
+        filled: true,
+        fillColor: context.tile,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
       ),
+      onChanged: onChanged,
     ),
-    onChanged: onChanged,
   );
 }
 
