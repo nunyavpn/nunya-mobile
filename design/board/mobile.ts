@@ -134,7 +134,7 @@ function tabBar(active: number) {
 
 type State = "off" | "connecting" | "on";
 
-const HEADLINE: Record<State, string> = { off: "Not connected", connecting: "Connecting…", on: "Proxy running" };
+const HEADLINE: Record<State, string> = { off: "Not connected", connecting: "Connecting…", on: "You're protected" };
 
 function mountMap(host: HTMLElement, state: State) {
   const canvas = h("canvas") as HTMLCanvasElement;
@@ -174,7 +174,6 @@ function home(state: State, open: boolean) {
         h(
           "div",
           { class: "mb-facts" },
-          h("div", { class: "mb-fact strong" }, h("span", { class: "mb-k" }, "Listening"), h("code", {}, "SOCKS / HTTP 127.0.0.1:2080")),
           h("div", { class: "mb-fact" }, h("span", { class: "mb-k" }, "Exit"), flag("FI"), h("code", {}, "Helsinki · Example Hosting · AS64500")),
           h("div", { class: "mb-fact" }, h("span", { class: "mb-k" }, "IPv4"), h("code", {}, "192.0.2.4")),
           h("div", { class: "mb-fact" }, h("span", { class: "mb-k" }, "IPv6"), h("code", {}, "2001:db8::24")),
@@ -220,8 +219,6 @@ function home(state: State, open: boolean) {
       h("span", { class: "mb-chev" }, icon("chevron-right", 18)),
     ),
     toggle,
-    // Proxy mode's honesty is not a swipe away: it is on the sheet, closed or open.
-    state === "on" ? h("div", { class: "mb-warn" }, icon("eye-off", 16), "Only apps set to use the proxy are covered") : null,
     state === "off" ? quick : null,
     ...details,
   );
@@ -236,7 +233,7 @@ function home(state: State, open: boolean) {
     "div",
     { class: "mb-screen" },
     mapHost,
-    h("div", { class: "mb-topbar" }, chip, h("span", { class: "mb-chip mode" }, icon("network", 16), "Proxy")),
+    h("div", { class: "mb-topbar" }, chip),
     sheet,
   );
 }
@@ -302,8 +299,8 @@ function mini(connected: boolean) {
     h(
       "div",
       { class: "mb-mini-text" },
-      h("b", { class: connected ? "on" : "" }, connected ? "Proxy running" : "Not connected"),
-      h("span", {}, connected ? "FI-1 Helsinki · only apps set to use it" : "FI-1 Helsinki"),
+      h("b", { class: connected ? "on" : "" }, connected ? "You're protected" : "Not connected"),
+      h("span", {}, "FI-1 Helsinki"),
     ),
     h("button", { class: `mb-mini-btn${connected ? " stop" : ""}` }, connected ? "Stop" : "Connect"),
   );
@@ -378,11 +375,10 @@ function consentSheet() {
         "div",
         { class: "mb-explain" },
         h("span", { class: "mb-state-icon", style: "color:var(--brand);background:var(--brand-soft)" }, icon("shield", 24)),
-        h("h4", {}, "Allow VPN mode"),
+        h("h4", {}, "Allow the VPN"),
         h("p", {}, "To carry every app on this phone through the tunnel, Android has to let Nunya set up a VPN. It asks you once."),
         fact("check", "Android asks, not Nunya.", "The next screen is the system's own; you can turn it off in Settings any time."),
         fact("eye-off", "Nothing leaves this phone.", "No account, no telemetry. Your servers stay on the device."),
-        fact("network", "Prefer not to?", "Proxy mode needs no permission, but covers only apps set to use it."),
       ),
       h("div", { class: "mb-modal-foot" }, h("button", { class: "mb-ghost" }, "Not now"), h("button", { class: "mb-cta" }, "Continue")),
     ),
@@ -410,8 +406,6 @@ function settings() {
     h(
       "div",
       { class: "mb-card" },
-      set("network", "Mode", "Proxy: only apps set to use it", h("span", { class: "mb-mode" }, h("span", { class: "on" }, "Proxy"), h("span", {}, "VPN"))),
-      set("lock", "Port", "SOCKS and HTTP on one port", h("span", { class: "mb-val" }, "2080")),
       set("globe", "Bypass rules", "Leave on your normal connection", go("4")),
     ),
     h("div", { class: "mb-group-label" }, "Blocking"),
@@ -472,7 +466,7 @@ render(
       h("div", {}, h("b", {}, "Spacing"), h("span", {}, "16px gutters; cards 18–24px corners; nothing meets the screen's edge but the map and the list's selected row.")),
       h("div", {}, h("b", {}, "Type"), h("span", {}, "Titles 30/800 · state 22/800 · rows 16/700 with 13 under · labels 11.5 caps · fields 16, so a phone never zooms the page.")),
       h("div", {}, h("b", {}, "The connection"), h("span", {}, "On Home, a sheet over the map: closed it is the state, the server and Connect; dragged up it is traffic and addresses. On every other tab, a one-line bar above the tabs.")),
-      h("div", {}, h("b", {}, "Honesty"), h("span", {}, "Proxy mode's “only apps set to use it” stays on the sheet and the bar, closed or open: the headline never says more than the mode covers.")),
+      h("div", {}, h("b", {}, "VPN only"), h("span", {}, "No proxy mode on a phone: the system's VPN carries every app, so there is no mode to choose and no port to set.")),
     ),
   ),
   section("Home", "The map fills the screen; the connection is a sheet over it. Pinch and drag move the map; there are no zoom buttons.", [
@@ -487,9 +481,9 @@ render(
   ]),
   section("Sheets", "Everything that was a dialog rises from the bottom, with its actions at thumb height.", [
     ["Add servers", (t) => phone(t, servers(false), 1, addSheet())],
-    ["VPN mode, before Android asks", (t) => phone(t, home("off", false), 0, consentSheet())],
+    ["VPN, before Android asks", (t) => phone(t, home("off", false), 0, consentSheet())],
   ]),
-  section("Settings", "Grouped rows in place of the desktop's long panel. Mode is a switch between two named things, never a toggle, because they cover different amounts of the phone.", [
+  section("Settings", "Grouped rows in place of the desktop's long panel. There is no Mode or Port: the phone only runs as a VPN.", [
     ["Settings", (t) => phone(t, settings(), 2)],
   ]),
 );
