@@ -23,8 +23,7 @@ the exact bindings still need to be proved on devices.
   (`nunya-vpn-group`) for that.
 - **iOS is built but not released yet.** A VPN app on the App Store needs an Apple Developer
   account enrolled as an organization (App Store guideline 5.4).
-- **Honest about coverage.** As on the desktop, proxy mode never claims to cover the whole phone;
-  only VPN mode may say "You're protected".
+- **Honest about coverage.** The mobile design is VPN-only. The current preview never claims to protect traffic because no tunnel is running.
 
 ## Design
 
@@ -33,7 +32,7 @@ the map), Servers, the sheets that rise from the bottom, and Settings.
 
 ## Development
 
-The app is at the scaffold stage; a working VPN is not implemented yet. With Flutter installed,
+The Flutter design preview now runs on Android and iOS with sample servers and local UI interactions. It does not start a VPN, route traffic, import servers, or save settings. Every simulated connection is labelled as a preview. With Flutter installed,
 run `flutter pub get`, `flutter analyze`, and `flutter test` from this directory. Use
 `flutter run` with an Android or iOS device to open the app.
 

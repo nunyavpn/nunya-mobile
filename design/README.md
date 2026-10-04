@@ -9,7 +9,7 @@ Nunya on a phone, screen by screen. Each screen is shown light, then dark.
 | **Spacing** | 16px gutters and 18–24px corners. Only the map and a selected row's tint reach the screen's edge. |
 | **Type** | Titles 30/800, the state 22/800, rows 16/700 with 13 under, labels 11.5 capitals, fields 16 so the page never zooms. |
 | **The connection** | On Home, a sheet over the map. On every other tab, a one-line bar above the tabs. |
-| **Honesty** | In proxy mode, “only apps set to use it” stays on the sheet and the bar, closed or open. |
+| **Honesty** | The current Flutter UI labels simulated connections as a preview. No VPN traffic is routed. |
 
 ## Home
 
@@ -57,7 +57,7 @@ Everything that was a dialog on the desktop rises from the bottom, with its acti
 
 ## Settings
 
-Grouped rows. Mode is a choice between two named things, because they cover different amounts of the phone.
+Grouped rows. The current mobile board is VPN-only, so Mode and Port are absent in the Flutter UI.
 
 **Settings**
 
@@ -66,3 +66,7 @@ Grouped rows. Mode is a choice between two named things, because they cover diff
 ## The board
 
 The screens were drawn from [board/](board/README.md), a page that renders each one with the desktop app's own colours, icons, flags and map. `nonya.png` is the app's artwork.
+
+## Current Flutter preview
+
+The current source board (`board/mobile.ts`) is VPN-only. The saved screen PNGs predate that change and still show proxy controls and real connection claims; they are layout references. The installed Flutter preview follows the current board layout, labels simulated connection data, and uses `map/countries-110m.json` for its offline map. The map data is Natural Earth public domain via world-atlas.
